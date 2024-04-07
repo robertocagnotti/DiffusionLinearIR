@@ -10,3 +10,4 @@
 /superres.sh
 /thesis_images.ipynb
 /improved_ddpm/__pycache__
+.gitignore
