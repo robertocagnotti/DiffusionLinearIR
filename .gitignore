@@ -1,0 +1,11 @@
+/__pycache__
+/data
+/images
+/log
+/mri_artificial.sh
+/mri_magnitude.sh
+/outputs
+/results.ipynb
+/sample.sh
+/superres.sh
+/thesis_images.ipynb
