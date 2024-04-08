@@ -11,15 +11,9 @@ from utils_mri import extract_pixel_size
 
 image_size=320
 device="cuda:0"
-dir_main = f"/itet-stor/robertca/bmicdatasets-originals/Originals/fastMRI/brain/multicoil_val"
-dirs = sorted(os.listdir(dir_main))
-types = ["T1"]
-if types != None:
-    dirs = [dir for dir in dirs for type in types if type in dir ]
-dirs = [os.path.join(dir_main,dir) for dir in dirs]
-dirs = [dir for dir in dirs if tuple(extract_pixel_size(h5py.File(dir)))==(0.6875, 0.6875)]
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--val_dir', type=str)
 parser.add_argument('--conditioned', action=argparse.BooleanOptionalAction, default=True)
 parser.add_argument('-p', '--problem', type=str)
 parser.add_argument('-m', '--sampling_mode', type=str, default="DC")
@@ -34,6 +28,18 @@ parser.add_argument('-s', '--slice', type=int, default=0)
 parser.add_argument('-f', '--file', type=str, default="T1_320_01")
 parser.add_argument('-a','--acc_factor', type=int, default=4)
 args = parser.parse_args()
+
+dir_main = args.val_dir
+dirs = sorted(os.listdir(dir_main))
+
+### Only include files with "T1" in their name
+types = ["T1"]
+if types != None:
+    dirs = [dir for dir in dirs for type in types if type in dir ]
+dirs = [os.path.join(dir_main,dir) for dir in dirs]
+
+### Uncomment the following line to only includes volumes with the same pixel size
+#dirs = [dir for dir in dirs if tuple(extract_pixel_size(h5py.File(dir)))==(0.6875, 0.6875)]
 
 conditioned = args.conditioned
 PROBLEM = args.problem
@@ -51,7 +57,7 @@ acc_factor=args.acc_factor
 
 if file == "T1_320_01":
     model_name = "ema_0.9999_700000.pt"
-elif file == "T1_320":
+elif file == "T1_320_-11":
     model_name = "ema_0.9999_780000.pt"
 
 condition_dir = dirs[dir_num]
@@ -92,7 +98,7 @@ model = create_model(
     dropout=0.0)
 
 print("loading from checkpoint...")
-ema_ckpt = torch.load(f"outputs/{file}/{model_name}", map_location=device)
+ema_ckpt = torch.load(f"trained_models/{file}/{model_name}", map_location=device)
 model.load_state_dict(ema_ckpt)
 
 if conditioned:
