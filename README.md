@@ -4,7 +4,9 @@ Implementation for Master's Thesis "Diffusion Models for Image Restoration".
 
 ## Training
 
-For training refer to [improved-diffusion](https://github.com/openai/improved-diffusion).
+For training refer to [improved-diffusion](https://github.com/openai/improved-diffusion).  
+The trained ema model must be placed in  
+[DiffusionLinearIR/trained_models/DESIRED_NAME/ema_0.9999_XXXXXX.pt](DiffusionLinearIR/trained_models/DESIRED_NAME/ema_0.9999_XXXXXX.pt)
 
 
 ## Sampling
